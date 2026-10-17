@@ -28,6 +28,8 @@ so a person can return to the source evidence.
   an error message, and a test may have multiple supporting error messages.
 - Exact original line numbers and text for extracted results and messages.
 - Deterministic grouping of repeated messages (case-insensitive message matching).
+- Built-in result charts comparing passed and failed tests, plus extracted errors
+  and warnings. These summarize the selected log; they are not historical trends.
 - JSON and Markdown reports containing deterministic results and evidence.
 - Optional, button-triggered Gemini diagnosis through Google's `google-genai`
   SDK and Interactions API. The response includes a summary, cited log evidence,
@@ -45,7 +47,7 @@ flowchart TD
     UI --> LIMIT[5 MB server and parser limits]
     LIMIT --> PARSER[Deterministic Python LogParser]
     PARSER --> DATA[Pydantic parsed results and line evidence]
-    DATA --> DASH[Counts, test table, repeated message groups]
+    DATA --> DASH[Counts, result charts, test table, repeated message groups]
     DATA --> REPORTS[Deterministic JSON and Markdown downloads]
     DATA -->|Only after user clicks Gemini button| SELECT[Select at most 12 failed-test/error lines]
     SELECT --> PROMPT[Untrusted-data instruction and structured response schema]
@@ -144,11 +146,11 @@ Replace the placeholder values in `.env`:
 
 ```dotenv
 GEMINI_API_KEY=your_actual_key_from_google_ai_studio
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-3.8-flash
 ```
 
 Create a key in [Google AI Studio](https://aistudio.google.com/api-keys). The
-default model name `gemini-2.5-flash` is listed in Google's
+default model name `gemini-3.8-flash` is listed in Google's
 [official Gemini model guide](https://ai.google.dev/gemini-api/docs/models).
 Model access may vary by account, project, or API availability; if Google rejects
 it, check the official model list and your key's access, then set an available

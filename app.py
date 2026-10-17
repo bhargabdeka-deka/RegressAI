@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import altair as alt
 import streamlit as st
 
 from analyzer.ai_assistant import AIAssistant
@@ -21,6 +22,68 @@ def _render_analysis(parsed_log: ParsedLog) -> None:
     metric_columns[2].metric("Failed", parsed_log.failed_tests)
     metric_columns[3].metric("Errors", parsed_log.error_count)
     metric_columns[4].metric("Warnings", parsed_log.warning_count)
+
+    st.markdown("### Results overview")
+    chart_columns = st.columns(2)
+    if parsed_log.total_tests:
+        test_chart = (
+            alt.Chart(
+                alt.Data(
+                    values=[
+                        {"Outcome": "Passed", "Tests": parsed_log.passed_tests},
+                        {"Outcome": "Failed", "Tests": parsed_log.failed_tests},
+                    ]
+                )
+            )
+            .mark_bar(cornerRadiusEnd=5)
+            .encode(
+                x=alt.X("Tests:Q", title="Tests", axis=alt.Axis(tickMinStep=1)),
+                y=alt.Y("Outcome:N", sort=["Passed", "Failed"], title=None),
+                color=alt.Color(
+                    "Outcome:N",
+                    scale=alt.Scale(
+                        domain=["Passed", "Failed"],
+                        range=["#22c55e", "#ef4444"],
+                    ),
+                    legend=None,
+                ),
+                tooltip=["Outcome:N", "Tests:Q"],
+            )
+            .properties(height=150)
+        )
+        chart_columns[0].altair_chart(test_chart, width="stretch")
+    else:
+        chart_columns[0].info("No test results are available to chart.")
+
+    if parsed_log.messages:
+        message_chart = (
+            alt.Chart(
+                alt.Data(
+                    values=[
+                        {"Severity": "Errors", "Messages": parsed_log.error_count},
+                        {"Severity": "Warnings", "Messages": parsed_log.warning_count},
+                    ]
+                )
+            )
+            .mark_bar(cornerRadiusEnd=5)
+            .encode(
+                x=alt.X("Messages:Q", title="Messages", axis=alt.Axis(tickMinStep=1)),
+                y=alt.Y("Severity:N", sort=["Errors", "Warnings"], title=None),
+                color=alt.Color(
+                    "Severity:N",
+                    scale=alt.Scale(
+                        domain=["Errors", "Warnings"],
+                        range=["#f97316", "#eab308"],
+                    ),
+                    legend=None,
+                ),
+                tooltip=["Severity:N", "Messages:Q"],
+            )
+            .properties(height=150)
+        )
+        chart_columns[1].altair_chart(message_chart, width="stretch")
+    else:
+        chart_columns[1].info("No extracted messages are available to chart.")
 
     st.markdown("### Test results")
     if parsed_log.tests:

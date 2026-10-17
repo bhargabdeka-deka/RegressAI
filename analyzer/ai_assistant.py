@@ -13,7 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from analyzer.parser import ParsedLog
 
-DEFAULT_GEMINI_MODEL = "gemini-2.5-flash"
+DEFAULT_GEMINI_MODEL = "gemini-3.8-flash"
 MAX_EVIDENCE_ITEMS = 12
 MAX_EVIDENCE_CHARS = 500
 _TRUNCATION_MARKER = " [truncated]"
@@ -188,7 +188,17 @@ class AIAssistant:
                 )
         except errors.APIError as exc:
             return AIAnalysisResult(available=False, error=_api_error_message(exc))
-        except Exception:
+        except Exception as exc:
+            # Try to derive a helpful message for model-not-found or compatibility errors
+            msg = str(exc).lower()
+            if ('not available' in msg or 'not_found' in msg or 'not found' in msg) and 'model' in msg:
+                return AIAnalysisResult(
+                    available=False,
+                    error=(
+                        f"The configured Gemini model '{self.model_name}' is not available to this API key. "
+                        "Check GEMINI_MODEL in your .env or use a supported model such as 'gemini-3.8-flash'."
+                    ),
+                )
             return AIAnalysisResult(
                 available=False,
                 error="Gemini request could not complete because of a network or client error.",
