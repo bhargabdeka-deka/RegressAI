@@ -2,11 +2,9 @@
 
 AI-Powered Log Analyzer & Regression Failure Assistant
 
-RegressAI is a local-first demonstration tool for turning a text-based software
-test log into a compact, evidence-based failure report. It combines deterministic
-Python parsing with an optional Gemini diagnosis. It is an interview and learning
-project, not a replacement for production test infrastructure or semiconductor
-verification tools.
+RegressAI is a local-first tool for turning a text-based software test log into
+a compact, evidence-based failure report. It combines deterministic Python
+parsing with optional Gemini-generated diagnostic hypotheses.
 
 ## Problem and motivation
 
@@ -219,8 +217,8 @@ Current limitations:
 - Tests use a mocked Gemini client. They validate request construction and
   failure handling, not successful live API access or account-specific model
   availability.
-- This demonstration is not production-ready; it has no authentication,
-  multi-user support, persistent analysis history, or deployment hardening.
+- The current application has no authentication, multi-user support, persistent
+  analysis history, or deployment hardening.
 
 Possible next improvements:
 
@@ -233,6 +231,6 @@ Possible next improvements:
 
 ## License and project status
 
-This is a demonstration project for interview preparation. Do not describe it as
-a production tool or claim performance or deployment results that have not been
-measured.
+RegressAI currently runs as a local Streamlit application. The project has not
+been evaluated for hosted or multi-user operation, and no performance or
+deployment results are claimed.

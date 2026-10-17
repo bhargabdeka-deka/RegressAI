@@ -1,4 +1,4 @@
-"""Streamlit interface for the RegressAI demonstration."""
+"""Streamlit interface for RegressAI."""
 
 from __future__ import annotations
 
