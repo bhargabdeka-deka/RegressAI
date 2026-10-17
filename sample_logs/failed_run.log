@@ -1,0 +1,8 @@
+[10:15:01] TEST packet_transfer: PASS
+[10:15:02] TEST memory_check: FAIL
+[10:15:02] ERROR: Memory allocation failed at 0x1000
+[10:15:03] WARNING: Buffer near capacity
+[10:15:04] TEST register_access: FAIL
+[10:15:05] ERROR: Register read returned unexpected value
+[10:15:06] ERROR: Timeout waiting for reset completion
+[10:15:07] TEST reset_sequence: PASS

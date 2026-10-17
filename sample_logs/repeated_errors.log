@@ -1,0 +1,6 @@
+[10:30:01] TEST packet_transfer: PASS
+[10:30:02] ERROR: DMA descriptor was not released
+[10:30:03] ERROR: DMA descriptor was not released
+[10:30:04] TEST dma_cleanup: FAIL
+[10:30:05] ERROR: DMA descriptor was not released
+[10:30:06] WARNING: Retry count is high
